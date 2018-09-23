@@ -63,8 +63,11 @@ public class Controller : MonoBehaviour
                 str += ", " + bc.name;  //for debug use
             }
             Debug.Log(str);  //for debug use
+
+            //TODO: Add object into the game scene accroding to RecognizedString 
+            //TODO: Write a serializer class for the Unity3D project
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.Log(e.Message);
         }
