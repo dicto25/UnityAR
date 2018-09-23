@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Vuforia;
+using ARobj;
+using System.Xml.Serialization;
+using System.IO;
 
 public class Controller : MonoBehaviour
 {
@@ -12,11 +15,21 @@ public class Controller : MonoBehaviour
 
     private List<BoxCollider> boxesPresent;
     private BoxCollider[] arrangedBoxes;
+    private ObjectData[] objList;
 
+    private readonly string filepath = "";
 
     // Use this for initialization
     void Start()
     {
+        //Load XML file at start
+        XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
+        using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+        {
+            objList = deserializer.Deserialize(fs) as ObjectData[];
+        }
+        if (objList == null)
+            throw new Exception("FAILED TO LOAD XML");
     }
 
     // Update is called once per frame
@@ -34,7 +47,7 @@ public class Controller : MonoBehaviour
 
             arrangedBoxes = boxesPresent.ToArray();
 
-            Array.Sort(arrangedBoxes, delegate (BoxCollider b1, BoxCollider b2)  //arrange the BoxColliders accroding to their x position
+            Array.Sort(arrangedBoxes, delegate (BoxCollider b1, BoxCollider b2)  //arrange the BoxColliders accroding to their x position using delegate method
             {
                 return b1.transform.position.x.CompareTo(b2.transform.position.x);
             });
