@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="pexels-photo-193340" size="1.000000 0.666667" />
+    <ImageTarget name="pexels-photolk573537357" size="1.000000 0.666667" />
+    <ImageTarget name="pexels-photo" size="1.000000 0.666667" />
+    <ImageTarget name="pexels-photo-45718" size="1.000000 0.659134" />
+    <ImageTarget name="pexels-photo-606539" size="1.000000 0.666667" />
+    <ImageTarget name="vintage-notebook-1764446_1280" size="1.000000 0.659375" />
+    <ImageTarget name="black-and-white-book-business-267669" size="1.000000 0.666571" />
+    <ImageTarget name="pexels-photo-372326" size="1.000000 0.667188" />
+    <ImageTarget name="abundance-achievement-advertising-623046" size="1.000000 0.666667" />
+  </Tracking>
+</QCARConfig>
