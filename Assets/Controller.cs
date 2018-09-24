@@ -6,6 +6,7 @@ using Vuforia;
 using ARobj;
 using System.Xml.Serialization;
 using System.IO;
+using ARIO;
 
 public class Controller : MonoBehaviour
 {
@@ -21,15 +22,16 @@ public class Controller : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    {
+    {   
         //Load XML file at start
-        XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
+        /*XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
         using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
         {
             objList = deserializer.Deserialize(fs) as ObjectData[];
         }
         if (objList == null)
             throw new Exception("FAILED TO LOAD XML");
+            */
     }
 
     // Update is called once per frame
