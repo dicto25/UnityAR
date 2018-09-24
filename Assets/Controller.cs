@@ -23,6 +23,10 @@ public class Controller : MonoBehaviour
     // Use this for initialization
     void Start()
     {   
+        ObjectLoader loader = new ObjectLoader();
+        objList = loader.LoadXML();
+        if(objList == null)
+            D
         //Load XML file at start
         /*XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
         using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
@@ -67,7 +71,6 @@ public class Controller : MonoBehaviour
             Debug.Log(str);  //for debug use
 
             //TODO: Add object into the game scene accroding to RecognizedString 
-            //TODO: Write a serializer class for the Unity3D project
         }
         catch (Exception e)
         {
