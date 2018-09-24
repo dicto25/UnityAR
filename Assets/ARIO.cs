@@ -79,22 +79,23 @@ namespace ARIO
 
     public class ObjectLoader
     {
-        pirvate ObjectData[] loadedData;
-        
+        private ObjectData[] loadedData;
+        private readonly string filepath = "";
         public ObjectData[] LoadXML()
         {
-            XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
-            using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+            try
             {
-                loadedData = deserializer.Deserialize(fs) as ObjectData[];
-                return loadedData
+                XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
+                using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+                {
+                    loadedData = deserializer.Deserialize(fs) as ObjectData[];
+                    return loadedData;
+                }
             }
-            if (objList == null)
-            {  
-                throw new Exception("FAILED TO LOAD XML");
+            catch
+            {
                 return null;
             }
-            
         }
             
     }

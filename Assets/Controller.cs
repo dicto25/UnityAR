@@ -25,8 +25,9 @@ public class Controller : MonoBehaviour
     {   
         ObjectLoader loader = new ObjectLoader();
         objList = loader.LoadXML();
-        if(objList == null)
-            D
+        if (objList == null)
+            throw new Exception("FAILIED TO LOAD XML FILE");
+
         //Load XML file at start
         /*XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
         using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
