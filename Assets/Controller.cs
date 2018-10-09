@@ -11,9 +11,10 @@ using ARIO;
 public class Controller : MonoBehaviour
 {
     public BoxCollider[] Boxes;
-    //public GameObject[] Targets;
+    public GameObject[] Targets;
     public string RecognizedString { get; private set; }  //read-only properity
 
+    private string lastString;
     private List<BoxCollider> boxesPresent;
     private BoxCollider[] arrangedBoxes;
     private ObjectData[] objList;
@@ -25,8 +26,8 @@ public class Controller : MonoBehaviour
     {   
         ObjectLoader loader = new ObjectLoader();
         objList = loader.LoadXML();
-        if (objList == null)
-            throw new Exception("FAILIED TO LOAD XML FILE");
+        //if (objList == null)
+            //throw new Exception("FAILIED TO LOAD XML FILE");
 
         //Load XML file at start
         /*XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
@@ -42,8 +43,8 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        try
-        {
+        //try
+        //{
             boxesPresent = new List<BoxCollider>();
 
             foreach (BoxCollider bc in Boxes)  //add all presenting BoxCollider in a list
@@ -69,13 +70,34 @@ public class Controller : MonoBehaviour
 
                 str += ", " + bc.name;  //for debug use
             }
-            Debug.Log(str);  //for debug use
+            Debug.Log(RecognizedString);  //for debug use
+
+            if (checkDetectChange())
+            {
+                if(RecognizedString == "ABC")
+                {
+                    GameObject obj = Instantiate(Resources.Load("cat")) as GameObject;
+                    
+                    obj.transform.parent = Targets[1].transform;
+                    obj.SetActive(true);
+                }
+
+                lastString = RecognizedString;
+            }
 
             //TODO: Add object into the game scene accroding to RecognizedString 
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-        }
+        //}
+        //catch (Exception e)
+        //{
+            //Debug.Log(e.Message);
+        //}
+    }
+
+    private bool checkDetectChange()
+    {
+        if (RecognizedString == lastString)
+            return false;
+        else
+            return true;
     }
 }
