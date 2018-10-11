@@ -10,6 +10,11 @@ using ARIO;
 
 public class Controller : MonoBehaviour
 {
+    //TODO: SQL server data storage and access (may do)
+    //TODO: y-coordinate offset checking
+    //TODO: automatic object resize and rotate
+    //TODO: finish all the TODOs
+
     public BoxCollider[] Boxes;
     public GameObject[] Targets;
     public string RecognizedString { get; private set; }  //read-only properity
@@ -55,7 +60,7 @@ public class Controller : MonoBehaviour
 
             arrangedBoxes = boxesPresent.ToArray();
 
-            Array.Sort(arrangedBoxes, delegate (BoxCollider b1, BoxCollider b2)  //arrange the BoxColliders accroding to their x position using delegate method
+            Array.Sort(arrangedBoxes, delegate (BoxCollider b1, BoxCollider b2)
             {
                 return b1.transform.position.x.CompareTo(b2.transform.position.x);
             });
