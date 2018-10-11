@@ -80,8 +80,12 @@ namespace ARIO
     public class ObjectLoader
     {
         private ObjectData[] loadedData;
-        private readonly string filepath = "";
-        public ObjectData[] LoadXML()
+        /// <summary>
+        /// Load XML data
+        /// </summary>
+        /// <param name="filepath">Path to the target XML file</param>
+        /// <returns></returns>
+        public ObjectData[] LoadXML(string filepath)
         {
             try
             {

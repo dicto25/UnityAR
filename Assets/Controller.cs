@@ -19,15 +19,15 @@ public class Controller : MonoBehaviour
     private BoxCollider[] arrangedBoxes;
     private ObjectData[] objList;
 
-    private readonly string filepath = "";
+    private readonly string filepath = Path.Combine(Environment.CurrentDirectory,"data.xml");  //name of the xml file MUST be data.xml
 
     // Use this for initialization
     void Start()
     {   
         ObjectLoader loader = new ObjectLoader();
-        objList = loader.LoadXML();
-        //if (objList == null)
-            //throw new Exception("FAILIED TO LOAD XML FILE");
+        objList = loader.LoadXML(this.filepath);
+        if (objList == null)
+            throw new Exception("FAILIED TO LOAD XML FILE");
 
         //Load XML file at start
         /*XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
@@ -71,21 +71,26 @@ public class Controller : MonoBehaviour
                 str += ", " + bc.name;  //for debug use
             }
             Debug.Log(RecognizedString);  //for debug use
-
+        if (objList != null)
+        {
             if (checkDetectChange())
             {
-                if(RecognizedString == "ABC")
+                foreach (ObjectData od in objList)
                 {
-                    GameObject obj = Instantiate(Resources.Load("cat")) as GameObject;
-                    
-                    obj.transform.parent = Targets[1].transform;
-                    obj.SetActive(true);
+                    if (RecognizedString == od.Text)
+                    {
+                        GameObject obj = Instantiate(Resources.Load(od.FileName)) as GameObject;
+
+                        int medianPos = arrangedBoxes.Length / 2;
+                        obj.transform.parent = Targets[medianPos].transform;
+                        obj.SetActive(true);
+                    }
                 }
 
                 lastString = RecognizedString;
             }
+        }
 
-            //TODO: Add object into the game scene accroding to RecognizedString 
         //}
         //catch (Exception e)
         //{
