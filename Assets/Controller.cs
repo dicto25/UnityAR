@@ -10,6 +10,8 @@ using ARIO;
 
 public class Controller : MonoBehaviour
 {
+    //CAUTION: XML may not be loaded in Android platform
+
     //TODO: SQL server data storage and access (may do)
     //TODO: y-coordinate offset checking
     //TODO: automatic object resize and rotate
@@ -26,6 +28,11 @@ public class Controller : MonoBehaviour
 
     private readonly string filepath = Path.Combine(Environment.CurrentDirectory,"data.xml");  //name of the xml file MUST be data.xml
 
+    private int currentArrayIndex = 0;
+    private readonly float timeToWait = 0.1f;  //need to set higher for weak cameras   //the higher the time-to-wait, the slower the program runs
+    private float deltaT = 0;
+    private bool isLoopDone = false;
+
     // Use this for initialization
     void Start()
     {   
@@ -34,30 +41,50 @@ public class Controller : MonoBehaviour
         if (objList == null)
             throw new Exception("FAILIED TO LOAD XML FILE");
 
-        //Load XML file at start
-        /*XmlSerializer deserializer = new XmlSerializer(typeof(ObjectData[]));
-        using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+        foreach(GameObject t in Targets)
         {
-            objList = deserializer.Deserialize(fs) as ObjectData[];
+            t.SetActive(false);
         }
-        if (objList == null)
-            throw new Exception("FAILED TO LOAD XML");
-            */
     }
 
     // Update is called once per frame
     void Update()
     {
-        //try
-        //{
-            boxesPresent = new List<BoxCollider>();
+        if (!isLoopDone)
+        {
+            deltaT += Time.deltaTime;
 
-            foreach (BoxCollider bc in Boxes)  //add all presenting BoxCollider in a list
+            if (deltaT < timeToWait)
             {
-                if (bc.enabled)
-                    boxesPresent.Add(bc);
-            }
+                if (currentArrayIndex == 26)
+                {
+                    isLoopDone = true;
+                    currentArrayIndex = 0;
+                    deltaT = 0;
+                }
 
+                else
+                {
+                    Targets[currentArrayIndex].SetActive(true);
+
+                    if (Boxes[currentArrayIndex].enabled)
+                    {
+                        boxesPresent.Add(Boxes[currentArrayIndex]);
+                        Targets[currentArrayIndex].SetActive(false);
+                        currentArrayIndex++;
+                        deltaT = 0;
+                    }
+                }
+            }
+            else
+            {
+                currentArrayIndex++;
+                deltaT = 0;
+            }
+        }
+
+        else
+        {
             arrangedBoxes = boxesPresent.ToArray();
 
             Array.Sort(arrangedBoxes, delegate (BoxCollider b1, BoxCollider b2)
@@ -69,38 +96,34 @@ public class Controller : MonoBehaviour
 
             RecognizedString = "";
             string str = "";
-            foreach(BoxCollider bc in arrangedBoxes)
+            foreach (BoxCollider bc in arrangedBoxes)
             {
                 RecognizedString += bc.name;
 
                 str += ", " + bc.name;  //for debug use
             }
             Debug.Log(RecognizedString);  //for debug use
-        if (objList != null)
-        {
-            if (checkDetectChange())
+            if (objList != null)
             {
-                foreach (ObjectData od in objList)
+                if (checkDetectChange())
                 {
-                    if (RecognizedString == od.Text)
+                    foreach (ObjectData od in objList)
                     {
-                        GameObject obj = Instantiate(Resources.Load(od.FileName)) as GameObject;
+                        if (RecognizedString == od.Text)
+                        {
+                            GameObject obj = Instantiate(Resources.Load(od.FileName)) as GameObject;
 
-                        int medianPos = arrangedBoxes.Length / 2;
-                        obj.transform.parent = Targets[medianPos].transform;
-                        obj.SetActive(true);
+                            int medianPos = arrangedBoxes.Length / 2;
+                            obj.transform.parent = Targets[medianPos].transform;
+                            obj.SetActive(true);
+                        }
                     }
+
+                    lastString = RecognizedString;
                 }
-
-                lastString = RecognizedString;
             }
+        isLoopDone = false;
         }
-
-        //}
-        //catch (Exception e)
-        //{
-            //Debug.Log(e.Message);
-        //}
     }
 
     private bool checkDetectChange()
